@@ -14,25 +14,28 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        verif_password = request.form['password']
-        mail = request.form ['mail']
+        verif_password = request.form['verif_password']
+        email = request.form ['email']
+        nuevo_email= request.form['nuevo_email']
         
         db = get_db()
         error = None
-
+        ##No muestra mensajes de error de username,password,email
         if not username:
-            error = 'Se necesita un nombre de usuario.'
+            error = 'Error! se necesita un nombre de usuario.'
         elif not password:
-            error = 'Se necesita una contraseña.'
+            error = 'Error! se necesita una contraseña.'
         elif verif_password != password:
-            error = 'Error, no coinciden contraseñas.'
-        elif not mail:
-            error = 'Se necesita un mail'
+            error = 'Error! no coinciden contraseñas.'
+        elif not email:
+            error = 'Error! es necesario un mail'
+        elif nuevo_email == email:
+            error = 'Error! es necesario otro mail'
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password, verif_password) VALUES (?, ?, ?, ?)",
-                    (username, generate_password_hash(password), verif_password, mail), 
+                    "INSERT INTO user (username, password, verif_password,email) VALUES (?, ?, ?, ?)",
+                    (username, generate_password_hash(password), verif_password, email), 
                 )
                 db.commit()
             except db.IntegrityError:
@@ -56,9 +59,9 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Nombre de usuario incorrecto.'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Contraseña incorrecta.'
 
         if error is None:
             session.clear()
@@ -68,6 +71,26 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
+
+@bp.route('/change', methods=('GET','POST'))
+def change():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['mail']
+        nuevo_email = request.form['nuevo_email']
+
+        db= get_db()
+        error = None
+        user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM user WHERE id = ?', (user_id,)
+        ).fetchone()
+
 
 @bp.before_app_request
 def load_logged_in_user():

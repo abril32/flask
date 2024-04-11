@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Registrar{% endblock %}</h1>
+  <h1>{% block title %}Cambio de email{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -11,9 +11,9 @@
     <label for="email">Email</label>
     <input type="email" name="email" id="email" required>
     <label for="password">Contraseña</label>
-    <input type="password" name="password" id="Contraseña" required>
-    <label for="verif_password">Verificar contraseña</label>
-    <input type="password" name="verif_password" id="verif_password" required>
-    <input type="submit" value="Registrarse">
+    <input type="password" name="password" id="password" required>
+    <label for="email">Cambio de email</label>
+    <input type="email" name="nuevo_email" id="nuevo_email" required>
+    <input type="submit" value="Entar">
   </form>
 {% endblock %}

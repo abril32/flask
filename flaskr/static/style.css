@@ -1,7 +1,7 @@
-html { font-family: sans-serif; background: hsl(214, 49%, 21%); padding: 1rem; }
+html { font-family: sans-serif; background: hwb(251 24% 61%); padding: 1rem; }
 body { max-width: 960px; margin: 0 auto; background: white; }
-h1 { font-family: serif; color: hsl(286, 51%, 44%); margin: 1rem 0; }
-a { color: hsl(337, 34%, 48%); }
+h1 { font-family: serif; color: rgb(69, 145, 168); margin: 1rem 0; }
+a { color: hwb(229 31% 45%); }
 hr { border: none; border-top: 1px solid #b7adf0; }
 nav { background: lightgray; display: flex; align-items: center; padding: 0 0.5rem; }
 nav h1 { flex: auto; margin: 0; }
