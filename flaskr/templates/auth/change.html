@@ -6,7 +6,7 @@
 
 {% block content %}
   <form method="post">
-    <label for="nuevo_email">Título</label>
+    <label for="nuevo_email">Cambio de mail</label>
     <input name="nuevo_email" id="nuevo_email"
       placeholder="{{ request.form['email'] or g.user['email'] }} (mail actual)" required>
     

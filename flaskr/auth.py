@@ -79,7 +79,7 @@ def change():
         error = None
 
         if not email:
-            error = 'Mail obligatorio.'
+            error = 'Es necesario un mail.'
         
         if error is None:
             db.execute(
