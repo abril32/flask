@@ -16,7 +16,7 @@ def register():
         password = request.form['password']
         verif_password = request.form['verif_password']
         email = request.form ['email']
-        nuevo_email= request.form['nuevo_email']
+      
         
         db = get_db()
         error = None
@@ -29,17 +29,16 @@ def register():
             error = 'Error! no coinciden contraseñas.'
         elif not email:
             error = 'Error! es necesario un mail'
-        elif nuevo_email == email:
-            error = 'Error! es necesario otro mail'
+        
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password, verif_password,email) VALUES (?, ?, ?, ?)",
-                    (username, generate_password_hash(password), verif_password, email), 
+                    "INSERT INTO user (username, password, email) VALUES (?, ?, ?)",
+                    (username, generate_password_hash(password), email), 
                 )
                 db.commit()
             except db.IntegrityError:
-                error = f"El ususario {username} ya esta registrado."
+                error = f"El usuario {username} ya esta registrado."
             else:
                 return redirect(url_for("auth.login"))
 
@@ -75,23 +74,38 @@ def login():
 @bp.route('/change', methods=('GET','POST'))
 def change():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['mail']
-        nuevo_email = request.form['nuevo_email']
-
+        email = request.form['nuevo_email']
         db= get_db()
         error = None
-        user_id = session.get('user_id')
 
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
-        ).fetchone()
+        if not email:
+            error = 'Mail obligatorio.'
+        
+        if error is None:
+            db.execute(
+                'UPDATE user SET email = ? WHERE id = ?', (email, g.user['id'])
+            )
+            db.commit()
+            return redirect(url_for('index'))
 
+        
+    return render_template('auth/change.html')
+    
 
+@bp.route('/delete', methods=('GET','POST'))
+def delete_usuario():
+    if request.method == 'POST':
+        db= get_db()
+        error = None
+
+    if error is None:
+        db.execute(
+            'DELETE user WHERE id = ?', (g.user['id'],)
+        )
+        db.commit()
+
+        return render_template('auth/change.html')
+    
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')

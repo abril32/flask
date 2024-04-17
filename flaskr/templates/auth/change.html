@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Cambio de email{% endblock %}</h1>
+  <h1>{% block title %}Editar mail{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   <form method="post">
-    <label for="username">Nombre de usuario</label>
-    <input name="username" id="Usuario" required>
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
-    <label for="password">Contraseña</label>
-    <input type="password" name="password" id="password" required>
-    <label for="email">Cambio de email</label>
-    <input type="email" name="nuevo_email" id="nuevo_email" required>
-    <input type="submit" value="Entar">
+    <label for="nuevo_email">Título</label>
+    <input name="nuevo_email" id="nuevo_email"
+      placeholder="{{ request.form['email'] or g.user['email'] }} (mail actual)" required>
+    
+    <input type="submit" value="Cambiar">
+  </form>
+  <hr>
+  <form action="{{ url_for('auth.delete_usuario') }}" method="post">
+    <input  type="submit" value="Borrar" onclick="return confirm('Are you sure?');">
   </form>
 {% endblock %}
