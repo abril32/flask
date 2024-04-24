@@ -20,7 +20,6 @@ def register():
         
         db = get_db()
         error = None
-        ##No muestra mensajes de error de username,password,email
         if not username:
             error = 'Error! se necesita un nombre de usuario.'
         elif not password:
