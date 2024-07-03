@@ -1,4 +1,5 @@
 import functools
+from collections import Counter
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -86,7 +87,6 @@ def change():
             )
             db.commit()
             return redirect(url_for('index'))
-
         
     return render_template('auth/change.html')
     
@@ -102,7 +102,20 @@ def delete_usuario():
         return logout()
 
     return render_template('auth/change.html')
-    
+
+@bp.route('/likes', methods=('GET','POST'))
+def count_like_dislike(likes_dislikes):
+   counter = Counter(likes_dislikes)
+   likes = counter.get('like', 0)
+   dislikes = counter.get('dislike', 0)
+   for item in likes_dislikes:
+      if item == 'like':
+         likes += 1
+      elif item == 'dislike':
+         dislikes += 1
+   return likes, dislikes
+
+
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
