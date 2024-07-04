@@ -94,3 +94,14 @@ def delete(id):
     db.execute('DELETE FROM post WHERE id = ?', (id,))
     db.commit()
     return redirect(url_for('blog.index'))
+
+@bp.route('/sumar')
+def sumar():
+    contador += 1
+    return str(contador)
+
+@bp.route('/restar')
+def restar():
+    if contador > 0:
+        contador -= 1
+    return str(contador)

@@ -16,3 +16,12 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE vote{
+  post_id INTEGER, 
+  user_id INTEGER,
+  vote INTEGER,
+  FOREIGN KEY (user_id) REFERENCES user (id),
+  FOREIGN KEY (post_id) REFERENCES post (id),
+  PRIMARY KEY (post_id, user_id)
+}

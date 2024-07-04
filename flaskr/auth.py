@@ -103,17 +103,6 @@ def delete_usuario():
 
     return render_template('auth/change.html')
 
-@bp.route('/likes', methods=('GET','POST'))
-def count_like_dislike(likes_dislikes):
-   counter = Counter(likes_dislikes)
-   likes = counter.get('like', 0)
-   dislikes = counter.get('dislike', 0)
-   for item in likes_dislikes:
-      if item == 'like':
-         likes += 1
-      elif item == 'dislike':
-         dislikes += 1
-   return likes, dislikes
 
 
 @bp.before_app_request
